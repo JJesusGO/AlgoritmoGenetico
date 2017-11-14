@@ -25,6 +25,7 @@ class Celda{
         inline const int  GetTipo() const {return tipo;}
         inline const char GetEsquema() const {return esquema[tipo];}
         inline const bool IsTipo(int tipo) const {return tipo==this->tipo;}
+        inline const bool IsColisionable() const {return tipo==CELDA_OBSTACULO;}
 
 };
 
