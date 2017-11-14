@@ -27,7 +27,7 @@ int Random::Next(int mn,int mx){
 }
 /*GENERACION DE UN NUMERO ALEATORIO ENTRE UN 0 Y UN MAXIMO ESTABLECIDO*/
 int Random::Next(int mx){
-    Next(0,mx);
+    return Next(0,mx);
 }
 
 /*GENERACION DE UN VARIABLE BOOLEANA ALEATORIA*/

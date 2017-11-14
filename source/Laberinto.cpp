@@ -50,6 +50,8 @@ bool Laberinto::LeerLaberinto(std::string archivo){
         delete [] renglon;
     }
 
+	fclose(file);
+
     return true;
 }
 void Laberinto::CrearMemoria(){

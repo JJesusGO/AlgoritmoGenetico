@@ -21,12 +21,11 @@ public:
 	void SetCromosoma(int i,bool valor);
 	void InverseCromosoma(int i);
 
-	const inline float  GetFitness(int i) const { return ValorR[i]; }
-	const inline float  GetFitness(int i) const { return ValorR[i]; }
-	const inline bool  GetCromosoma(int i) const { return Cromosoma[i]; }
+	const inline float  GetValorR(int i) const { return ValorR[i]; }
+	const inline bool   GetCromosoma(int i) const { return Cromosoma[i]; }
 	const inline float  GetFitness() const { return Fitness; }
 	const inline float  GetValorObjetivo() const { return ValorObjetibvo; }
-	const inline float GetPorcentaje() const { return Porcentaje; }
+	const inline float  GetPorcentaje() const { return Porcentaje; }
 
 	private:
 
