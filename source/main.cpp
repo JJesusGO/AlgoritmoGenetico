@@ -14,7 +14,12 @@ int main(){
     printf("\n");
 
     Entidad entidad(&lab);
-    entidad.NextMovimiento();
+    entidad.MostrarLaberinto();
+    printf("\n");
+    while(!entidad.NextMovimiento()){
+        entidad.MostrarLaberinto();
+        printf("\n");
+    }
     entidad.MostrarLaberinto();
 
     return 0;
