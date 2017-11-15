@@ -18,7 +18,7 @@ class Binario{
     Binario(int tipo = 0,float rmin = 0.0f,float rmax = 1.0f);
 
     public:
-        const float GetNumero(bool *binario,unsigned int bits) const;
+        const float GetNumero(const bool *binario,unsigned int bits) const;
 
 };
 

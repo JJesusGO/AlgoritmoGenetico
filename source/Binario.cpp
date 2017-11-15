@@ -7,11 +7,11 @@ Binario::Binario(int tipo,float rmin,float rmax){
     this->rmax = rmax;
 }
 /*ESTA FUNCION SE ENCARGA DE CONVERTIR LOS VALORES DE BINARIO A TIPO DESCRITO POR LA CLASE*/
-const float Binario::GetNumero(bool *binario,unsigned int bits) const{
+const float Binario::GetNumero(const bool *binario,unsigned int bits) const{
 
     bool signo = tipo & BINARIO_SIGNO;
     bool real  = tipo & BINARIO_REAL;
-    bool *bin = (signo)?binario+1:binario;
+    const bool *bin = (signo)?binario+1:binario;
     int n = (signo)?bits-1:bits;
     float numero = 0.0f;
     for(unsigned int i=0;i<n;i++)
