@@ -27,10 +27,11 @@ class AG{
     int     *parejas,
             parejasn;
 
-    float  (*evaluar)(Individuo &individuo);
-    float  (*fitness)(Individuo &individuo);
+    float  (*evaluar)(Individuo *individuo);
+    float  (*fitness)(Individuo *individuo);
 
     Individuo *poblacion;
+    Individuo  individuo;
 
     public:
 
@@ -39,13 +40,16 @@ class AG{
 
     public:
 
-    void SetFunciones(float (*evaluar)(Individuo &individuo),
-                      float  (*fitness)(Individuo &individuo));
+    void SetFunciones(float (*evaluar)(Individuo *individuo),
+                      float  (*fitness)(Individuo *individuo));
     void SetProbabilidades(float pc,float pm);
     void SetPrioridad(int prioridad);
 
+           const float      GetPromedioObjetivo() const;
     inline const int        GetMejorIndex() const {return mejor;}
-    inline const Individuo& GetMejor() const {return poblacion[mejor];}
+    inline const Individuo& GetMejorGeneracion() const {return poblacion[mejor];}
+    inline const Individuo& GetMejor() const {return individuo;}
+    inline       Individuo* GetIndividuo() {return &individuo;}
     inline const float      GetProbabilidadCruza() const {return pc;}
     inline const float      GetProbabilidadMutacion() const {return pm;}
     inline const int        GetPrioridad() const {return prioridad;}
@@ -61,6 +65,7 @@ class AG{
     void NextIteracion();
     void IniciarPoblacion(int *bitsgenes,int *tipogenes,int genes);
     void MostrarPoblacion();
+    void MostrarPoblacionSimple();
     void MostrarParejas();
     void EvaluarPoblacion();
     void SeleccionarPoblacion();

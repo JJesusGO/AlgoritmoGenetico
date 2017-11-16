@@ -48,7 +48,7 @@ Individuo::~Individuo(){
 
 }
 
-void Individuo::MostrarIndividuo(int in){
+const void Individuo::MostrarIndividuo(int in) const {
 
 	printf("\nINDIVIDUO[%i]: ", in);
 	for (unsigned int i = 0;i < Genes;i++){
@@ -68,6 +68,7 @@ void Individuo::MostrarIndividuo(int in){
 	printf("\nOBJETIVO:   %+0.4f", ValorObjetivo);
 	printf("\nFITNESS:    %+0.4f", Fitness);
 	printf("\nPORCENTAJE: %+0.4f", Porcentaje);
+	printf("\nSEED:       %s", seed.GetSeedString().c_str());
 
 }
 
@@ -120,6 +121,7 @@ void Individuo::SetIndividuo(Individuo &NewInndividuo){
 
     Genes = NewInndividuo.GetGenes();
 	Bits = 0;
+    seed = NewInndividuo.GetSeed();
 
 	if(BitsGen!=NULL)
         delete []BitsGen;
@@ -156,6 +158,9 @@ void Individuo::SetIndividuo(Individuo &NewInndividuo){
 	Actualizar();
 
 }
+void Individuo::SetSeed(Seed seed){
+    this->seed = seed;
+}
 void Individuo::SetValorObjetivo(float valor){
 	ValorObjetivo = valor;
 }
@@ -182,7 +187,7 @@ void Individuo::Actualizar(){
 		ValorR[i] = bin.GetNumero(GetGen(i), BitsGen[i]);
 	}
 }
-const bool* Individuo::GetGen(int gen){
+const bool* Individuo::GetGen(int gen) const {
 	int suma = 0;
 	for (unsigned int i = 0;i < gen;i++){
 		suma += BitsGen[i];

@@ -1,5 +1,18 @@
 #include "Laberinto.h"
 
+
+Laberinto::Laberinto(){
+
+    this->celdas = NULL;
+    this->n      = n;
+    this->m      = m;
+    this->ix     = 0;
+    this->iy     = 0;
+    this->fx     = 0;
+    this->fy     = 0;
+
+
+}
 Laberinto::Laberinto(std::string archivo){
 
     this->celdas = NULL;
@@ -11,21 +24,8 @@ Laberinto::Laberinto(std::string archivo){
     if(!LeerLaberinto(archivo))
         printf("ERROR AR LEER EL ARCHIVO: %s",archivo.c_str());
 
-    Actualizar();
 }
-Laberinto::Laberinto(Celda celdas[][100],int n,int m){
 
-    this->celdas = NULL;
-    this->n = n;
-    this->m = m;
-    this->ix = 0;
-    this->iy = 0;
-    this->fx = 0;
-    this->fy = 0;
-
-    Actualizar();
-
-}
 Laberinto::~Laberinto(){
     BorrarMemoria();
 }
@@ -51,6 +51,7 @@ bool Laberinto::LeerLaberinto(std::string archivo){
     }
 
 	fclose(file);
+    Actualizar();
 
     return true;
 }

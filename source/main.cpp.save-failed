@@ -1,0 +1,52 @@
+#include <cmath>
+
+#include  "Binario.h"
+#include "Laberinto.h"
+#include "Entidad.h"
+#include "Random.h"
+#include "AG.h"
+
+
+static Laberinto *laberinto = NULL;
+
+float Evaluar(Individuo &individuo){
+    return individuo.GetValorR(0)+individuo.GetValorR(1);
+}
+float Fitness(Individuo &individuo){
+    return fabs(individuo.GetValorObjetivo());
+}
+
+int main(){
+
+    Random::SetRandom();
+    Random::SetSeed(Seed(4));
+
+    laberinto
+    laberinto.LeerLaberinto("Laberinto.txt");
+
+    int bitsgenes [ENTIDAD_PLANTILLAS*ENTIDAD_CELDAS];
+    int tipogenes [ENTIDAD_PLANTILLAS*ENTIDAD_CELDAS];
+
+    for (int i=0;i<ENTIDAD_PLANTILLAS*ENTIDAD_CELDAS;i++){
+        bitsgenes[i] = 8;
+        tipogenes[i] = BINARIO_REAL;
+    }
+    AG ag(6,20);
+
+    ag.SetFunciones(Evaluar,Fitness);
+    ag.SetProbabilidades(0.6,0.05);
+    ag.SetPrioridad(AG_MENOR);
+
+    ag.IniciarPoblacion(bitsgenes,tipogenes,ENTIDAD_PLANTILLAS*ENTIDAD_CELDAS);
+    ag.EvaluarPoblacion();
+
+    int generacion = 0;
+    while(ag.IsNextGeneracion(generacion)){
+        ag.NextIteracion();
+        generacion++;
+    }
+    ag.MostrarPoblacion();
+
+    return 0;
+
+}

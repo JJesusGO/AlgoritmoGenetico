@@ -16,19 +16,20 @@ class Laberinto{
 
     public:
 
+    Laberinto();
     Laberinto(std::string archivo);
-    Laberinto(Celda celdas[][100],int n,int m);
     ~Laberinto();
 
     private:
 
-    bool LeerLaberinto(std::string archivo);
+
     void CrearMemoria();
     void BorrarMemoria();
     void Actualizar();
 
     public:
 
+    bool LeerLaberinto(std::string archivo);
     void MostrarLaberinto();
     void MostrarLaberinto(int x,int y,char c);
 

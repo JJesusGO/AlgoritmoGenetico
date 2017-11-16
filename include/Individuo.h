@@ -16,7 +16,7 @@ public:
 	Individuo(int *bitsGen, int *tipoGen,int genes);
 	~Individuo();
 
-	void MostrarIndividuo(int in);
+	const void MostrarIndividuo(int in) const;
 
 	void InvertirCromosoma(int i);
 
@@ -25,12 +25,14 @@ public:
 	void SetIndividuo(Individuo &NewInndividuo);
 
 	void SetFitness(float valor);
+	void SetSeed(Seed seed);
 	void SetValorObjetivo(float valor);
 	void SetPorcentaje(float valor);
 	void SetCromosoma(int i,bool valor);
 	void SetCromosoma();
 
-    const bool          *GetGen(int gen);
+    const bool          *GetGen(int gen) const ;
+    const inline Seed   GetSeed() const {return seed;}
     const inline int    GetGenes() const {return Genes;}
     const inline int    GetBits() const {return Bits;}
     const inline int    GetTipoGen(int i) const {return TipoGen[i];}
@@ -45,6 +47,7 @@ public:
 
 private:
 
+    Seed  seed;
 	bool  *Cromosoma;
 	int   *BitsGen;
 	int   *TipoGen;

@@ -29,8 +29,8 @@ AG::~AG(){
 }
 
 /*FUNCION UTILIZADA PARA INICIAR LOS PUNTEROS A FUNCIONES*/
-void AG::SetFunciones(float (*evaluar)(Individuo &individuo),
-                      float  (*fitness)(Individuo &individuo)){
+void AG::SetFunciones(float (*evaluar)(Individuo *individuo),
+                      float  (*fitness)(Individuo *individuo)){
 
     if(evaluar!=NULL)
         this->evaluar     = evaluar;
@@ -49,10 +49,18 @@ void AG::SetPrioridad(int prioridad){
     this->prioridad = prioridad;
 }
 
+const float AG::GetPromedioObjetivo() const{
+    float promedio = 0.0f;
+    for(unsigned int i=0;i<individuos;i++)
+        promedio += poblacion[i].GetValorObjetivo();
+    return promedio/individuos;
+}
+
 /*INICIALIZACION DE LA POBLACION*/
 void AG::IniciarPoblacion(int *bitsgenes,int *tipogenes,int genes){
 
     poblacion = new Individuo[individuos];
+    individuo.SetIndividuo(bitsgenes,tipogenes,genes);
 
     for(unsigned int i=0;i<individuos;i++){
 
@@ -83,6 +91,12 @@ void AG::MostrarPoblacion(){
         printf("\n\n");
     }
 }
+void AG::MostrarPoblacionSimple(){
+    for(unsigned int i=0;i<individuos;i++)
+        printf("INDIVIDUO[%0.3d]-> OBJETIVO: %0.1f - FITNESS: %0.1f \n",i,poblacion[i].GetValorObjetivo(),poblacion[i].GetFitness());
+
+
+}
 void AG::MostrarParejas(){
     for(unsigned int i=0;i<parejasn/2;i++)
         printf("%d - %d\n",parejas[i*2],parejas[i*2+1]);
@@ -101,12 +115,12 @@ void AG::EvaluarPoblacion(){
     //EJECUCION DE LA EVALUACION DE CADA INDIVIDUO
     if(evaluar!=NULL)
         for(unsigned int i=0;i<individuos;i++)
-            poblacion[i].SetValorObjetivo(evaluar(poblacion[i]));
+            poblacion[i].SetValorObjetivo(evaluar(&poblacion[i]));
 
     //EJECUCION DE LA DETERMINACION DEL FITNESS DE CADA INDIVIDUO
     if(fitness!=NULL)
         for(unsigned int i=0;i<individuos;i++)
-            poblacion[i].SetFitness(fitness(poblacion[i]));
+            poblacion[i].SetFitness(fitness(&poblacion[i]));
 
     //NORMALIZACION Y DETERMINACION DEL MEJOR INDIVIDUO
     float minimo = poblacion[0].GetFitness();
@@ -115,7 +129,7 @@ void AG::EvaluarPoblacion(){
                 minimo = poblacion[i].GetFitness();
     minimo = (minimo<0)?-minimo:minimo;
     for(unsigned int i=0;i<individuos;i++)
-        poblacion[i].SetFitness(poblacion[i].GetFitness() - minimo);
+        poblacion[i].SetFitness(poblacion[i].GetFitness() + minimo);
 
      //DETERMINACION DE LAS PROBABILIDADES DE CADA INDIVIDUO
     if(prioridad == AG_MAYOR){
@@ -142,6 +156,15 @@ void AG::EvaluarPoblacion(){
     for(unsigned int i=0;i<individuos;i++)
         if(poblacion[i].GetPorcentaje() > poblacion[mejor].GetPorcentaje())
             mejor = i;
+
+    if(prioridad == AG_MAYOR)
+        if(poblacion[mejor].GetValorObjetivo() >= individuo.GetValorObjetivo())
+            individuo.SetIndividuo(poblacion[mejor]);
+
+    if(prioridad == AG_MENOR)
+        if(poblacion[mejor].GetValorObjetivo() <= individuo.GetValorObjetivo())
+            individuo.SetIndividuo(poblacion[mejor]);
+
 
 }
 

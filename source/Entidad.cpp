@@ -1,6 +1,6 @@
 #include "Entidad.h"
 
-const int Entidad::plantillas[ENTIDAD_PLANTILLAS][4] = {
+const int Entidad::plantillas[ENTIDAD_PLANTILLAS][ENTIDAD_CELDAS] = {
                                        {-1,-1,-1,-1},
                                        {1,0,0,0},
                                        {1,1,0,0},
@@ -12,16 +12,35 @@ const int Entidad::plantillas[ENTIDAD_PLANTILLAS][4] = {
                                        {0,0,0,0}
                                     };
 
-Entidad::Entidad(Laberinto *laberinto){
+Entidad::Entidad(Laberinto *laberinto,Individuo *individuo){
     this->laberinto = laberinto;
+    this->individuo = individuo;
+    this->celdas = new bool*[laberinto->GetN()];
+    for(int i=0;i<laberinto->GetN();i++)
+        this->celdas[i] = new bool[laberinto->GetM()];
     Reiniciar();
 }
+Entidad::~Entidad(){
+    for(int i=0;i<laberinto->GetN();i++)
+        delete[] celdas[i];
+    delete[] celdas;
+}
+
 void Entidad::Reiniciar(){
-    this->x = laberinto->GetInicio().GetX();
-    this->y = laberinto->GetInicio().GetY();
+    x = laberinto->GetInicio().GetX();
+    y = laberinto->GetInicio().GetY();
     direccion = ENTIDAD_INICIO;
     plantilla = 0;
     colision = false;
+    termino  = false;
+    pasos = 0;
+    puntuacion = 0;
+
+    for(int i=0;i<laberinto->GetN();i++)
+        for(int j=0;j<laberinto->GetM();j++)
+            celdas[i][j] = false;
+    celdas[y][x] = true;
+
 }
 void Entidad::MostrarLaberinto(){
     printf("PLANTILLA: %d\nDIRECCION: %d\n\n",plantilla,direccion);
@@ -29,6 +48,7 @@ void Entidad::MostrarLaberinto(){
         this->laberinto->MostrarLaberinto(x,y,'X');
     else
         this->laberinto->MostrarLaberinto(x,y,'O');
+    printf("\n");
 }
 bool Entidad::NextMovimiento(){
 
@@ -36,7 +56,7 @@ bool Entidad::NextMovimiento(){
         py = y;
     plantilla  = 0;
 
-    Celda celdas[4];
+    Celda celdas[ENTIDAD_CELDAS];
     switch(direccion){
         case ENTIDAD_INICIO:
             celdas[0] = laberinto->GetCelda(px,py-1);
@@ -71,23 +91,29 @@ bool Entidad::NextMovimiento(){
     }
 
     if(!(direccion == ENTIDAD_INICIO)){
-        int p[4] = {(int)celdas[0].IsColisionable(),
-                    (int)celdas[1].IsColisionable(),
-                    (int)celdas[2].IsColisionable(),
-                    (int)celdas[3].IsColisionable()};
+        int p[ENTIDAD_CELDAS] = {(int)celdas[0].IsColisionable(),
+                                 (int)celdas[1].IsColisionable(),
+                                 (int)celdas[2].IsColisionable(),
+                                 (int)celdas[3].IsColisionable()};
         for(int i=0;i<ENTIDAD_PLANTILLAS;i++){
             int condicion = 0;
-            for(int j=0;j<4;j++)
+            for(int j=0;j<ENTIDAD_CELDAS;j++)
                 condicion += p[j] == plantillas[i][j];
-            if(condicion == 4){
+            if(condicion == ENTIDAD_CELDAS){
                 plantilla = i;
                 break;
             }
         }
     }
 
-    float probabilidades[] = {0.25f,0.25f,0.25f,0.25f};
-    Probabilidad p(probabilidades,4);
+    int index              = plantilla*ENTIDAD_CELDAS;
+    float probabilidades[] = {
+                individuo->GetValorR(index),
+                individuo->GetValorR(index+1),
+                individuo->GetValorR(index+2),
+                individuo->GetValorR(index+3)
+    };
+    Probabilidad p(probabilidades,ENTIDAD_CELDAS);
 
     int celda      = p.Next();
     int movimiento = ENTIDAD_INICIO;
@@ -116,14 +142,38 @@ bool Entidad::NextMovimiento(){
 
     if(laberinto->GetCelda(px,py).IsColisionable()){
         colision = true;
-        return true;
+
+        pasos++;
+        puntuacion++;
+
+        return false;
+    }
+    else if(laberinto->GetCelda(px,py).IsTipo(CELDA_FINAL)){
+        termino = true;
+
+        x = px;
+        y = py;
+
+        pasos++;
+        puntuacion++;
+
+        return false;
     }
 
     x = px;
     y = py;
 
+    if(!this->celdas[y][x])
+        puntuacion++;
+    else
+        puntuacion--;
+    pasos++;
+    this->celdas[y][x] = true;
+
     colision = false;
-    return false;
+    termino = false;
+
+    return true;
 
 }
 
