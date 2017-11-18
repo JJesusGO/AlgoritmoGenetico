@@ -1,6 +1,6 @@
 #include "Laberinto.h"
 
-
+/*CONTRUCTOR DEL LABERINTO*/
 Laberinto::Laberinto(){
 
     this->celdas = NULL;
@@ -13,6 +13,7 @@ Laberinto::Laberinto(){
 
 
 }
+/*CONTRUCTOR DEL LABERINTO USANDO UN ARCHIVO COMO REFERENCIA*/
 Laberinto::Laberinto(std::string archivo){
 
     this->celdas = NULL;
@@ -25,10 +26,12 @@ Laberinto::Laberinto(std::string archivo){
         printf("ERROR AR LEER EL ARCHIVO: %s",archivo.c_str());
 
 }
-
+/*DESTRUCTOR DL LABERINTO*/
 Laberinto::~Laberinto(){
     BorrarMemoria();
 }
+
+/*LEER EL LABERINTO Y RELLENAR LA MEMORIA DEL LAS CELDAS*/
 bool Laberinto::LeerLaberinto(std::string archivo){
 
     FILE *file = fopen(archivo.c_str(),"r");
@@ -55,6 +58,8 @@ bool Laberinto::LeerLaberinto(std::string archivo){
 
     return true;
 }
+
+/*CREAR LA MEMORIA DE LAS CELDAS*/
 void Laberinto::CrearMemoria(){
 
     BorrarMemoria();
@@ -63,6 +68,7 @@ void Laberinto::CrearMemoria(){
         celdas[i] = new Celda[m];
 
 }
+/*BORRAR LA MEMORIA DE LAS CELDAS*/
 void Laberinto::BorrarMemoria(){
 
     if(celdas==NULL)
@@ -72,6 +78,8 @@ void Laberinto::BorrarMemoria(){
     delete []celdas;
 
 }
+
+/*ACTUALIZAR LAS POSICIONES DE LAS CELDA INICIO Y FIN*/
 void Laberinto::Actualizar(){
 
     for(unsigned int i=0;i<n;i++)
@@ -88,6 +96,7 @@ void Laberinto::Actualizar(){
 
 }
 
+/*MOSTRAR EL LABERINTO */
 void Laberinto::MostrarLaberinto(){
 
     for(unsigned int i=0;i<n;i++){
@@ -97,6 +106,7 @@ void Laberinto::MostrarLaberinto(){
     }
 
 }
+/*MOSTRAR EL LABERINTO CON UN CARACTER ESPECIAL EN ALGUNA POSICION*/
 void Laberinto::MostrarLaberinto(int x,int y,char c){
 
 

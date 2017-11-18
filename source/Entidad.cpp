@@ -1,5 +1,6 @@
 #include "Entidad.h"
 
+/*PLANTILLAS PARA EL FUNCIONAMIENTO DE LA ENTIDAD*/
 const int Entidad::plantillas[ENTIDAD_PLANTILLAS][ENTIDAD_CELDAS] = {
                                        {-1,-1,-1,-1},
                                        {1,0,0,0},
@@ -12,6 +13,7 @@ const int Entidad::plantillas[ENTIDAD_PLANTILLAS][ENTIDAD_CELDAS] = {
                                        {0,0,0,0}
                                     };
 
+/*CONTRUCTOR DE LA ENTIDAD*/
 Entidad::Entidad(Laberinto *laberinto,Individuo *individuo){
     this->laberinto = laberinto;
     this->individuo = individuo;
@@ -20,12 +22,14 @@ Entidad::Entidad(Laberinto *laberinto,Individuo *individuo){
         this->celdas[i] = new bool[laberinto->GetM()];
     Reiniciar();
 }
+/*DESSSTRUCTOR DE LA ENTIDAD*/
 Entidad::~Entidad(){
     for(int i=0;i<laberinto->GetN();i++)
         delete[] celdas[i];
     delete[] celdas;
 }
 
+/*REINICIAR A VALORES PREESTABLECIDOS LA ENTIDAD EN BASE AL LABERINTO*/
 void Entidad::Reiniciar(){
     x = laberinto->GetInicio().GetX();
     y = laberinto->GetInicio().GetY();
@@ -42,6 +46,7 @@ void Entidad::Reiniciar(){
     celdas[y][x] = true;
 
 }
+/*MOTRAR EL LABERINTO CON LA ENTIDAD EN SU POSICION, ADEMAS DE LA PLANTILLA DETECTADA Y EL ULTIMO MOVIMIENTO*/
 void Entidad::MostrarLaberinto(){
     printf("PLANTILLA: %d\nDIRECCION: %d\n\n",plantilla,direccion);
     if(colision)
@@ -50,6 +55,8 @@ void Entidad::MostrarLaberinto(){
         this->laberinto->MostrarLaberinto(x,y,'O');
     printf("\n");
 }
+
+/*CALCULO DE EL SIGUIENTE MOVIMIENTO EN EL LABERINTO*/
 bool Entidad::NextMovimiento(){
 
     int px = x,

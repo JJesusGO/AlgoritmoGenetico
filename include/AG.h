@@ -48,6 +48,7 @@ class AG{
            const float      GetPromedioObjetivo() const;
     inline const int        GetMejorIndex() const {return mejor;}
     inline const Individuo& GetMejorGeneracion() const {return poblacion[mejor];}
+    inline       Individuo* GetMejorGeneracionP() const {return &poblacion[mejor];}
     inline const Individuo& GetMejor() const {return individuo;}
     inline       Individuo* GetIndividuo() {return &individuo;}
     inline const float      GetProbabilidadCruza() const {return pc;}

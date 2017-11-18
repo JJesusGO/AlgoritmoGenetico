@@ -39,16 +39,18 @@ void AG::SetFunciones(float (*evaluar)(Individuo *individuo),
 
 }
 
-
+/*CAMBIAR EL VALOR DE LAS PROBABILIDADDES DE CRUZA Y MUTACION*/
 void AG::SetProbabilidades(float pc,float pm){
     this->pc = pc;
     this->pm = pm;
 }
 
+/*PRIORIDAD DE FUNCIONAMIENTO ES DECIR IMPORTA MAS EL QUE TIENE MAS O MENOS*/
 void AG::SetPrioridad(int prioridad){
     this->prioridad = prioridad;
 }
 
+/*CALCULAR EL PROMEDIO DEL OBJETIVO DE TODA LA POBLACION*/
 const float AG::GetPromedioObjetivo() const{
     float promedio = 0.0f;
     for(unsigned int i=0;i<individuos;i++)
@@ -73,7 +75,7 @@ void AG::IniciarPoblacion(int *bitsgenes,int *tipogenes,int genes){
 
 }
 
-
+/*BORRAR UN TIPO DE POBLACION DE INDIVIDUOS*/
 void AG::BorrarPoblacion(Individuo* poblacion){
 
     if(poblacion != NULL){
@@ -91,17 +93,20 @@ void AG::MostrarPoblacion(){
         printf("\n\n");
     }
 }
+/*FUNCION QUE MUESTRA DE MANERA SENCILLA EL VALOR OBJETIVO Y FITNESS DE LA POBLACION*/
 void AG::MostrarPoblacionSimple(){
     for(unsigned int i=0;i<individuos;i++)
         printf("INDIVIDUO[%0.3d]-> OBJETIVO: %0.1f - FITNESS: %0.1f \n",i,poblacion[i].GetValorObjetivo(),poblacion[i].GetFitness());
 
 
 }
+/*MOSTRAR LA TABLA DE PAREJAS PARA LA CRUZA*/
 void AG::MostrarParejas(){
     for(unsigned int i=0;i<parejasn/2;i++)
         printf("%d - %d\n",parejas[i*2],parejas[i*2+1]);
 }
 
+/*EJECUTAR TODAS LAS FUNCIONES DE UNA ITERACION*/
 void AG::NextIteracion(){
     SeleccionarPoblacion();
     CruzarPoblacion();
@@ -189,6 +194,7 @@ void AG::SeleccionarPoblacion(){
     delete[] probabilidades;
 
 }
+/*FUNCION PARA LA CRUZA DE LOS INDIVIDUOS EN PAREJAS*/
 void AG::CruzarPoblacion(){
 
     float probabilidades[] = {pc,1.0f-pc};
@@ -233,6 +239,8 @@ void AG::CruzarPoblacion(){
     BorrarPoblacion(npoblacion);
 
 }
+
+/*PROCESO DE MUTACION DE BITS DE UN CROMOSOMA*/
 void AG::MutarPoblacion(){
 
     float probabilidades[] = {pm,1-pm};

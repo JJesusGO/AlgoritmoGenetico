@@ -45,8 +45,8 @@ int main(){
         tipogenes[i] = BINARIO_REAL;
     }
 
-    laberinto = new Laberinto("Laberinto1.txt");
-    AG ag(1000,75);
+    laberinto = new Laberinto("Laberinto3.txt");
+    AG ag(1000,200);
 
     ag.SetFunciones(Evaluar,Fitness);
     ag.SetProbabilidades(0.60,0.02);
@@ -63,7 +63,7 @@ int main(){
     while(ag.IsNextGeneracion(generacion)){
         ag.NextIteracion();
         if(valor < ag.GetMejor().GetValorObjetivo()){
-            printf("\n%0.3d - %0.1f",generacion,ag.GetMejor().GetValorObjetivo());
+            printf("\n%0.3d - %0.1f - %0.1f",generacion,ag.GetMejor().GetValorObjetivo(),ag.GetPromedioObjetivo());
             valor = ag.GetMejor().GetValorObjetivo();
         }
         generacion++;
@@ -91,7 +91,7 @@ int main(){
         entidad.MostrarLaberinto();
     entidad.MostrarLaberinto();
 
-    printf("\nPASOS: %d\nPUNTUACION: %0.1f",entidad.GetPasos(),entidad.GetPuntuacion());
+    printf("\nPASOS: %d\nPUNTUACION: %0.1f",entidad.GetPasos(),(float)entidad.GetPuntuacion());
 
     delete laberinto;
 
